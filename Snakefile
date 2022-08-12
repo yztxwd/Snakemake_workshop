@@ -67,11 +67,14 @@ rule bwa_mem_param:
     shell:
         "bwa mem -t {threads} {params.extra} {input.genome} {input.fq1} {input.fq2} 1> {output} 2> {log}"
 
-#practice: sam to bam
-#rule sam_to_bam:
-#    input:
-#    output:
-#    shell:
+#sam to bam
+rule sam_to_bam:
+    input:
+        "{prefix}.sam"
+    output:
+        "{prefix}.bam"
+    shell:
+        "samtools view -b {input} > {output}"
 
 #samtools merge
 sras = ["SRR922442", "SRR922443"]
@@ -86,6 +89,36 @@ rule merge_bam:
         extra=""
     shell:
         "samtools merge -@ {threads} {params.extra} {output} {input}"
+
+#multiqc
+rule multiqc:
+    input:
+        expand("output/fastqc/{sra}_{rep}_fastqc.zip", sra=sras, rep=[1, 2])
+    output:
+        "output/multiqc/multiqc_report.html"
+    conda:
+        "envs/multiqc.yaml"
+    shell:
+        "multiqc -n {output} {input}"
+
+# customized function
+import os
+def find_input(wildcards):
+    fs = []
+    for f in os.listdir("data/samples/"):
+        if "fastq" in f:
+            fs.append("output/fastqc/" + f.replace(".fastq", "_fastqc.zip"))
+    return fs
+
+rule multiqc_function:
+    input:
+        find_input
+    output:
+        "output/multiqc/multiqc_function.html"
+    conda:
+        "envs/multiqc.yaml"
+    shell:
+        "multiqc -n {output} {input}"
 
 # python script integration
 rule script:
