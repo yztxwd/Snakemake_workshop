@@ -1,6 +1,7 @@
 # Snakemake_workshop
-Example code for snakemake workshop
+
+For PSU 2022 Data Reproducibility Bootcamp session 3
+
+This workshop aims to show audience the general idea of workflow management tool
 
 @Jianyu Yang
-
-The genome fasta file "chr1.fa" is not included due to the size limit, you can replace that with any bwa build genome index
