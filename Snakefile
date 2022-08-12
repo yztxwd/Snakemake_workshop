@@ -33,7 +33,7 @@ rule fastqc_log:
     log:
         "output/logs/fastqc/{prefix}.log"
     shell:
-        "fastqc {input} -o output/fastqc > {log}"
+        "fastqc {input} -o output/fastqc &> {log}"
 
 #bwa mem threads
 #rule bwa_mem_threads:
