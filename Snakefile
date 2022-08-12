@@ -104,6 +104,6 @@ rule jupyter:
         "output/figures/jupyter.png"
     log:
         # optional path to the processed notebook
-        notebook="logs/notebooks/processed_notebook.ipynb"
+        notebook="logs/notebooks/processed_notebook.py.ipynb"
     notebook:
-        "notebooks/test.ipynb"
+        "notebooks/test.py.ipynb"
